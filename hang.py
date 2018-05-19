@@ -1,5 +1,6 @@
 import random
 import string
+import logging
 
 
 def testAsserts(param,typeParam,msgNone,msgType):
@@ -44,6 +45,8 @@ def isLetterGuessed(letter, lettersGuessed):
 
 
 def hangman(secretWord):
+
+    logging.basicConfig(filename='hangmanlog.log',level=logging.DEBUG)
     testAsserts(secretWord,string,"secretWord receiving null","secretWord not a String")
     
     guesses = 8
@@ -51,6 +54,8 @@ def hangman(secretWord):
     print('Welcome to the game, Hangam!')
     print('I am thinking of a word that is', len(secretWord), ' letters long.')
     print('-------------')
+    
+    logging.debug("start - isWordGuessed()")
 
     while  isWordGuessed(secretWord, lettersGuessed) == False and guesses >0:
         print('You have ', guesses, 'guesses left.')
@@ -61,31 +66,48 @@ def hangman(secretWord):
                 available = available.replace(letter, '')
 
         print('Available letters', available)
+        
+        logging.debug("letter input")
+        
         letter = input('Please guess a letter: ')
+        
+        
+        
         if letter in lettersGuessed:
 
             guessed = isLetterGuessed(letter, lettersGuessed)
-
+            
+            logging.debug("already guessed that letter")
+            
             print('Oops! You have already guessed that letter: ', guessed)
+            
+            
         elif letter in secretWord:
             lettersGuessed.append(letter)
 
             guessed = isLetterGuessed(letter, lettersGuessed)
-
+            
+            logging.debug("good guess")
+            
             print('Good Guess: ', guessed)
+            
         else:
             guesses -=1
             lettersGuessed.append(letter)
 
             guessed = isLetterGuessed(letter, lettersGuessed)
-
+            
+            logging.debug("letter not in my word")
+            
             print('Oops! That letter is not in my word: ',  guessed)
         print('------------')
 
     else:
         if isWordGuessed(secretWord, lettersGuessed) == True:
+            logging.debug("Victory")
             print('Congratulations, you won!')
         else:
+            logging.debug("Defeat")
             print('Sorry, you ran out of guesses. The word was ', secretWord, '.')
 
 
