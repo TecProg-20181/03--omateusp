@@ -4,10 +4,10 @@ import string
 
 
 def loadWords():
-    WORDLIST_FILENAME = "palavras.txt"
+    wordListFileName = "palavras.txt"
     print("Loading word list from file...")
     # line: string
-    line = open(WORDLIST_FILENAME, 'r').readline()
+    line = open(wordListFileName, 'r').readline()
     # wordlist: list of strings
     wordlist = str.split(line)
     print("  ", len(wordlist), "words loaded.")
@@ -15,30 +15,22 @@ def loadWords():
 
 
 def isWordGuessed(secretWord, lettersGuessed):
-    secretLetters = []
-    
     for letter in secretWord:
         if letter in lettersGuessed:
             pass
         else:
             return False
-
     return True
 
-def getGuessedWord():
 
-     guessed = ''
-
-
-     return guessed
-
-def getAvailableLetters():
-    import string
-    # 'abcdefghijklmnopqrstuvwxyz'
-    available = string.ascii_lowercase
-
-
-    return available
+def isLetterGuessed(letter, lettersGuessed):
+    guessed = ''
+    for letter in secretWord:
+        if letter in lettersGuessed:
+            guessed += letter
+        else:
+            guessed += '_ '
+    return guessed
 
 def hangman(secretWord):
 
@@ -51,7 +43,7 @@ def hangman(secretWord):
     while  isWordGuessed(secretWord, lettersGuessed) == False and guesses >0:
         print('You have ', guesses, 'guesses left.')
 
-        available = getAvailableLetters()
+        available = string.ascii_lowercase
         for letter in available:
             if letter in lettersGuessed:
                 available = available.replace(letter, '')
@@ -60,35 +52,20 @@ def hangman(secretWord):
         letter = input('Please guess a letter: ')
         if letter in lettersGuessed:
 
-            guessed = getGuessedWord()
-            for letter in secretWord:
-                if letter in lettersGuessed:
-                    guessed += letter
-                else:
-                    guessed += '_ '
+            guessed = isLetterGuessed(letter, lettersGuessed)
 
             print('Oops! You have already guessed that letter: ', guessed)
         elif letter in secretWord:
             lettersGuessed.append(letter)
 
-            guessed = getGuessedWord()
-            for letter in secretWord:
-                if letter in lettersGuessed:
-                    guessed += letter
-                else:
-                    guessed += '_ '
+            guessed = isLetterGuessed(letter, lettersGuessed)
 
             print('Good Guess: ', guessed)
         else:
             guesses -=1
             lettersGuessed.append(letter)
 
-            guessed = getGuessedWord()
-            for letter in secretWord:
-                if letter in lettersGuessed:
-                    guessed += letter
-                else:
-                    guessed += '_ '
+            guessed = isLetterGuessed(letter, lettersGuessed)
 
             print('Oops! That letter is not in my word: ',  guessed)
         print('------------')
