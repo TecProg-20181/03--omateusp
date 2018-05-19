@@ -2,6 +2,10 @@ import random
 import string
 
 
+def testAsserts(param,typeParam,msgNone,msgType):
+    assert param !=None,msgNone 
+    assert type(param)!=typeParam,msgType 
+
 
 def loadWords():
     wordListFileName = "palavras.txt"
@@ -15,6 +19,9 @@ def loadWords():
 
 
 def isWordGuessed(secretWord, lettersGuessed):
+    testAsserts(lettersGuessed,string,"lettersGuessed receiving null","lettersGuessed not a String")
+    testAsserts(secretWord,string,"secretWord receiving null","secretWord not a String")
+    
     for letter in secretWord:
         if letter in lettersGuessed:
             pass
@@ -24,6 +31,9 @@ def isWordGuessed(secretWord, lettersGuessed):
 
 
 def isLetterGuessed(letter, lettersGuessed):
+    testAsserts(lettersGuessed,string,"lettersGuessed receiving null","lettersGuessed not a String")
+    testAsserts(letter,string,"lettersGuessed receiving null","lettersGuessed not a String")
+
     guessed = ''
     for letter in secretWord:
         if letter in lettersGuessed:
@@ -32,8 +42,10 @@ def isLetterGuessed(letter, lettersGuessed):
             guessed += '_ '
     return guessed
 
-def hangman(secretWord):
 
+def hangman(secretWord):
+    testAsserts(secretWord,string,"secretWord receiving null","secretWord not a String")
+    
     guesses = 8
     lettersGuessed = []
     print('Welcome to the game, Hangam!')
@@ -75,8 +87,6 @@ def hangman(secretWord):
             print('Congratulations, you won!')
         else:
             print('Sorry, you ran out of guesses. The word was ', secretWord, '.')
-
-
 
 
 secretWord = loadWords().lower()
